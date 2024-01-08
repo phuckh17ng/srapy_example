@@ -101,5 +101,9 @@ DEFAULT_REQUEST_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0',
 }
 
-# support utf-8: scrapy crawl tgdd -o tgdd.json
+# # support utf-8: scrapy crawl tgdd -o tgdd.json
 FEED_EXPORT_ENCODING = 'utf-8'
+
+# dowload file
+ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+IMAGES_STORE = 'download-files'

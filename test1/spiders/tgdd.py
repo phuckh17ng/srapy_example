@@ -1,30 +1,34 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 
-class TggSpider(scrapy.Spider):
+class TggSpider(CrawlSpider ):
     name = "tgdd" # tên của spider
     allowed_domains = ["thegioididong.com"] # dont't config https://www...
     # ta điền link cần cào
     start_urls = [
-        'https://www.thegioididong.com/may-tinh-bang',
+        'https://www.thegioididong.com/',
     ]
 
- # lớp để bóc tách dữ liệu
-    def parse(self, response):
-        # Tìm tất cả các item dựa vào selector
-        for item_url in response.css(".listproduct").extract():
-            yield scrapy.Request(response.urljoin(item_url), callback=self.parse_tablet) # if have product, call function parse_book_page
-        
-       # nếu có trang kế thì bóc tiếp
-        next_page = response.css("li.next > a ::attr(href)").extract_first()
-        if next_page:
-            yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
+    rules = (
+        # Rule(LinkExtractor(allow="catalogue")),
+        # Rule(LinkExtractor(allow="truyen/name")),
+        Rule(LinkExtractor(allow="may-tinh-bang"), callback="parse_item"),
+    )
+    # rules = (
+    #     Rule(LinkExtractor(allow="truyen"), callback="parse_item"),
+    #     Rule(LinkExtractor(allow="truyen", deny="name"), callback="parse_item")
+    # )
 
-    def parse_tablet(self, response):
+    def parse_item(self, response):       
         item = {}
-        # find info of product
-        product = response.css(".type0")
-        item["title"] = product.css(".rowtop > h1::text").extract_first()
-        item['price'] = response.css('.area_price strong ::text').extract_first()
-       
+        # yield {
+        #     "title": response.css("#__next > div > div > div.info > div > div.d-block.d-sm-flex.pt-2 > div.right.flex-grow-1.pl-sm-5.pl-0.px-3 > div:nth-child(1) > div.d-flex.flex-column.mt-3.mt-sm-0 > h3::text").get(),
+        #     # "price": response.css(".price_color::text").get(),
+        #     "description": response.css("#__next > div > div > div.info > div > div.d-block.d-sm-flex.pt-2 > div.right.flex-grow-1.pl-sm-5.pl-0.px-3 > div:nth-child(1) > div.text-normal.overflow-none::text").get(),
+        # }
+        item["title"] = response.css("#categoryPage > div.container-productbox > ul > li:nth-child(1) > a.main-contain > h3::text").get()
+        # item["description"] = response.css("#__next > div > div > div.info > div > div.d-block.d-sm-flex.pt-2 > div.right.flex-grow-1.pl-sm-5.pl-0.px-3 > div:nth-child(1) > div.text-normal.overflow-none::text").get()
+
         yield item

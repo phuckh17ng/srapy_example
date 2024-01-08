@@ -12,4 +12,7 @@ class Test1Item(scrapy.Item):
     # User = scrapy.Field()
     # Comment = scrapy.Field()
     # Time = scrapy.Field()
+    image_urls = scrapy.Field()
+    images = scrapy.Field()
+    
     pass
