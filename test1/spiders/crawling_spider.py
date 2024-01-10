@@ -11,7 +11,7 @@ class CrawlingSpider(CrawlSpider):
     # a list of domains that this spider will be allowed to crawl from, when no particular URLs are specified
     # start_urls = ["http://books.toscrape.com/"]
 
-    allowed_domains = ["allinvn.net"]
+    # allowed_domains = ["allinvn.net"]
     start_urls = ["https://allinvn.net/"]
 
 
@@ -19,15 +19,18 @@ class CrawlingSpider(CrawlSpider):
 
     rules = (
         # Rule(LinkExtractor(allow="catalogue")),
-        Rule(LinkExtractor(allow="truyen/name")),
-        Rule(LinkExtractor(allow="truyen", deny="name"), callback="parse_item"),
+        # Rule(LinkExtractor(allow="truyen/name")),
+        Rule(callback="parse_item"),
     )
     # rules = (
-    #     Rule(LinkExtractor(allow="truyen"), callback="parse_item"),
-    #     Rule(LinkExtractor(allow="truyen", deny="name"), callback="parse_item")
+    #     Rule(LinkExtractor(allow="truyen")),
+    #     Rule(LinkExtractor(allow="truyen/name", deny="name"), callback="parse_item")
     # )
 
-    def parse_item(self, response):       
+    def parse_item(self, response):  
+        print("khang123", self)     
+        print("khang111", response)     
+
         item = {}
         # yield {
         #     "title": response.css("#__next > div > div > div.info > div > div.d-block.d-sm-flex.pt-2 > div.right.flex-grow-1.pl-sm-5.pl-0.px-3 > div:nth-child(1) > div.d-flex.flex-column.mt-3.mt-sm-0 > h3::text").get(),
@@ -40,7 +43,7 @@ class CrawlingSpider(CrawlSpider):
         
         image_url = response.urljoin(image_url)
         item['image_urls'] = [image_url]
-        print("khang123", image_url)
+        # print("khang123", image_url)
 
         yield item
 

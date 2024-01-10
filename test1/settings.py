@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "test1.spiders"
 #USER_AGENT = "test1 (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -25,7 +25,8 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 3000
+DOWNLOAD_TIMEOUT = 3000
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -95,9 +96,9 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 DEFAULT_REQUEST_HEADERS = {
 # Các khai báo command này chưa cần thiết để khai báo
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#   'Referer': 'https://www.google.com',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en',
+    'Referer': 'https://www.google.com',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0',
 }
 
@@ -105,5 +106,8 @@ DEFAULT_REQUEST_HEADERS = {
 FEED_EXPORT_ENCODING = 'utf-8'
 
 # dowload file
-ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
-IMAGES_STORE = 'download-files'
+ITEM_PIPELINES = {"scrapy.pipelines.files.FilesPipeline": 1}
+
+# ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+# IMAGES_STORE = 'download-files'
+FILES_STORE = "files"
